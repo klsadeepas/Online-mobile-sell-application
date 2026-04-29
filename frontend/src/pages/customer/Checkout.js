@@ -55,7 +55,7 @@ const Checkout = () => {
       const { data } = await couponAPI.validateCoupon({ code: couponCode, subtotal: cart.subtotal });
       setAppliedCoupon(data.coupon);
       setDiscountAmount(data.discount);
-      toast.success(`Coupon applied: $${data.discount} off!`);
+      toast.success(`Coupon applied: Rs. ${data.discount} off!`);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Invalid coupon code');
       setAppliedCoupon(null);
@@ -157,7 +157,7 @@ const Checkout = () => {
                       <p className="text-sm font-bold line-clamp-1">{item.name}</p>
                       <p className="text-xs text-gray-500">{item.quantity} x ${item.price.toLocaleString()}</p>
                     </div>
-                    <p className="text-sm font-bold">${item.totalPrice.toLocaleString()}</p>
+                    <p className="text-sm font-bold">Rs. {item.totalPrice.toLocaleString()}</p>
                   </div>
                 ))}
               </div>
@@ -194,11 +194,11 @@ const Checkout = () => {
               <div className="space-y-3 mb-8 border-t pt-6 border-gray-100 dark:border-slate-700">
                 <div className="flex justify-between text-gray-500">
                   <span>Subtotal</span>
-                  <span>${cart?.subtotal.toLocaleString()}</span>
+                  <span>Rs. {cart?.subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-gray-500">
                   <span>Tax & Shipping</span>
-                  <span>${(cart?.tax + cart?.shipping).toLocaleString()}</span>
+                  <span>Rs. {(cart?.tax + cart?.shipping).toLocaleString()}</span>
                 </div>
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-green-500 font-bold">
@@ -208,7 +208,7 @@ const Checkout = () => {
                 )}
                 <div className="flex justify-between text-2xl font-extrabold border-t pt-3 border-gray-100 dark:border-slate-700">
                   <span>Total</span>
-                  <span className="text-blue-600">${finalTotal.toLocaleString()}</span>
+                  <span className="text-blue-600">Rs. {finalTotal.toLocaleString()}</span>
                 </div>
               </div>
 
