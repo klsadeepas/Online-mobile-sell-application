@@ -18,11 +18,11 @@ const Home = () => {
   }, [dispatch]);
 
   const brands = [
-    { name: 'Apple', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' },
-    { name: 'Samsung', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg' },
-    { name: 'Xiaomi', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg' },
-    { name: 'OnePlus', logo: 'https://upload.wikimedia.org/wikipedia/commons/3/30/OnePlus_logo.svg' },
-    { name: 'Google Pixel', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' }
+    { name: 'Apple', logo: 'https://cdn.simpleicons.org/apple/000000' },
+    { name: 'Samsung', logo: 'https://cdn.simpleicons.org/samsung/000000' },
+    { name: 'Xiaomi', logo: 'https://cdn.simpleicons.org/xiaomi/000000' },
+    { name: 'OnePlus', logo: 'https://cdn.simpleicons.org/oneplus/000000' },
+    { name: 'Google Pixel', logo: 'https://cdn.simpleicons.org/google/000000' }
   ];
 
   return (
@@ -33,7 +33,7 @@ const Home = () => {
       <section className="py-12 bg-blue-600">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
-            { icon: FiTruck, title: 'Free Delivery', desc: 'On orders over $500' },
+            { icon: FiTruck, title: 'Free Delivery', desc: 'On orders over RS.50, 000' },
             { icon: FiShield, title: 'Secure Payment', desc: '100% secure processing' },
             { icon: FiAward, title: 'Official Warranty', desc: 'Authorized resellers' },
             { icon: FiRefreshCw, title: 'Easy Returns', desc: '30-day money back' }

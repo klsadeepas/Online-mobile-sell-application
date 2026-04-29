@@ -9,11 +9,15 @@ import { FiFilter, FiX, FiChevronDown, FiSearch } from 'react-icons/fi';
 const Products = () => {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { products, brands, isLoading, pages, page: currentPage } = useSelector((state) => state.products);
+  const productState = useSelector((state) => state.products);
   const { isDarkMode } = useSelector((state) => state.theme);
 
+  // Handle both array and object structures safely
+  const products = Array.isArray(productState?.products) ? productState.products : (productState?.products?.products || []);
+  const { brands, isLoading, pages, page: currentPage } = productState;
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  
+
   // Filter States
   const [filters, setFilters] = useState({
     brand: searchParams.get('brand') || '',
@@ -40,17 +44,17 @@ const Products = () => {
       page: params.page || 1
     }));
 
-    dispatch(getProducts({
-      ...params,
-      keyword: params.search,
-      page: params.page || 1
-    }));
+    const queryParams = { ...params, page: params.page || 1 };
+    // Only pass keyword if it has a valid value to avoid backend searching for "undefined"
+    if (params.search) queryParams.keyword = params.search;
+
+    dispatch(getProducts(queryParams));
   }, [dispatch, searchParams]);
 
   const handleFilterChange = (name, value) => {
     const newFilters = { ...filters, [name]: value };
     setFilters(newFilters);
-    
+
     const params = {};
     if (newFilters.brand) params.brand = newFilters.brand;
     if (newFilters.minPrice) params.minPrice = newFilters.minPrice;
@@ -60,7 +64,7 @@ const Products = () => {
     if (newFilters.sort) params.sort = newFilters.sort;
     if (newFilters.keyword) params.search = newFilters.keyword;
     if (newFilters.inStock) params.inStock = 'true';
-    
+
     setSearchParams(params);
   };
 
@@ -81,7 +85,7 @@ const Products = () => {
     <div className={`min-h-screen pt-24 pb-20 ${isDarkMode ? 'bg-slate-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          
+
           {/* Desktop Sidebar / Mobile Drawer */}
           <aside className={`lg:w-64 flex-shrink-0 ${isFilterOpen ? 'block' : 'hidden lg:block'}`}>
             <div className={`sticky top-24 p-6 rounded-3xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'} shadow-sm`}>
@@ -97,8 +101,8 @@ const Products = () => {
                 <label className="text-sm font-semibold mb-2 block">Search</label>
                 <div className="relative">
                   <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={filters.keyword}
                     onChange={(e) => handleFilterChange('keyword', e.target.value)}
                     className={`w-full pl-10 pr-4 py-2 rounded-xl text-sm border focus:ring-2 focus:ring-blue-500 outline-none ${isDarkMode ? 'bg-slate-700 border-slate-600' : 'bg-gray-50 border-gray-200'}`}
@@ -110,7 +114,7 @@ const Products = () => {
               {/* Brand Filter */}
               <div className="mb-6">
                 <label className="text-sm font-semibold mb-2 block">Brand</label>
-                <select 
+                <select
                   value={filters.brand}
                   onChange={(e) => handleFilterChange('brand', e.target.value)}
                   className={`w-full p-2 rounded-xl text-sm border focus:ring-2 focus:ring-blue-500 outline-none ${isDarkMode ? 'bg-slate-700 border-slate-600' : 'bg-gray-50 border-gray-200'}`}
@@ -124,17 +128,17 @@ const Products = () => {
               <div className="mb-6">
                 <label className="text-sm font-semibold mb-2 block">Price Range</label>
                 <div className="flex items-center gap-2">
-                  <input 
-                    type="number" 
-                    placeholder="Min" 
+                  <input
+                    type="number"
+                    placeholder="Min"
                     value={filters.minPrice}
                     onChange={(e) => handleFilterChange('minPrice', e.target.value)}
                     className={`w-1/2 p-2 rounded-xl text-sm border ${isDarkMode ? 'bg-slate-700 border-slate-600' : 'bg-gray-50 border-gray-200'}`}
                   />
                   <span>-</span>
-                  <input 
-                    type="number" 
-                    placeholder="Max" 
+                  <input
+                    type="number"
+                    placeholder="Max"
                     value={filters.maxPrice}
                     onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
                     className={`w-1/2 p-2 rounded-xl text-sm border ${isDarkMode ? 'bg-slate-700 border-slate-600' : 'bg-gray-50 border-gray-200'}`}
@@ -150,11 +154,10 @@ const Products = () => {
                     <button
                       key={ram}
                       onClick={() => handleFilterChange('ram', filters.ram === ram ? '' : ram)}
-                      className={`py-1.5 px-2 rounded-lg text-xs font-medium border transition-all ${
-                        filters.ram === ram 
-                          ? 'bg-blue-600 border-blue-600 text-white' 
-                          : isDarkMode ? 'bg-slate-700 border-slate-600 hover:border-blue-500' : 'bg-gray-50 border-gray-200 hover:border-blue-500'
-                      }`}
+                      className={`py-1.5 px-2 rounded-lg text-xs font-medium border transition-all ${filters.ram === ram
+                        ? 'bg-blue-600 border-blue-600 text-white'
+                        : isDarkMode ? 'bg-slate-700 border-slate-600 hover:border-blue-500' : 'bg-gray-50 border-gray-200 hover:border-blue-500'
+                        }`}
                     >
                       {ram}
                     </button>
@@ -179,18 +182,18 @@ const Products = () => {
               <p className="text-sm font-medium text-gray-500">
                 Showing <span className={isDarkMode ? 'text-white' : 'text-gray-900'}>{products.length}</span> products
               </p>
-              
+
               <div className="flex items-center gap-4 w-full sm:w-auto">
-                <button 
+                <button
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
                   className="lg:hidden flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-bold"
                 >
                   <FiFilter /> Filters
                 </button>
-                
+
                 <div className="flex items-center gap-2 ml-auto">
                   <span className="text-sm text-gray-500 whitespace-nowrap">Sort by:</span>
-                  <select 
+                  <select
                     value={filters.sort}
                     onChange={(e) => handleFilterChange('sort', e.target.value)}
                     className={`p-2 rounded-xl text-sm border outline-none ${isDarkMode ? 'bg-slate-700 border-slate-600' : 'bg-gray-50 border-gray-200'}`}
@@ -211,7 +214,7 @@ const Products = () => {
                   <div key={i} className={`aspect-[3/4] rounded-3xl animate-pulse ${isDarkMode ? 'bg-slate-800' : 'bg-gray-200'}`}></div>
                 ))}
               </div>
-            ) : products.length > 0 ? (
+            ) : products && products.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 <AnimatePresence mode="popLayout">
                   {products.map((product) => (
@@ -244,11 +247,10 @@ const Products = () => {
                   <button
                     key={i}
                     onClick={() => handlePageChange(i + 1)}
-                    className={`w-10 h-10 rounded-xl font-bold transition-all ${
-                      currentPage === i + 1 
-                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' 
-                        : isDarkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-white border border-gray-200 hover:bg-gray-50'
-                    }`}
+                    className={`w-10 h-10 rounded-xl font-bold transition-all ${currentPage === i + 1
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
+                      : isDarkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-white border border-gray-200 hover:bg-gray-50'
+                      }`}
                   >
                     {i + 1}
                   </button>
