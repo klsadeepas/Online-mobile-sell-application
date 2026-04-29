@@ -130,16 +130,18 @@ const ProductDetails = () => {
               <p className={`mt-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{product.description}</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'}`}>
-                <p className="text-xs text-gray-500 uppercase font-bold">Storage</p>
-                <p className="font-semibold">{product.specs.storage}</p>
+            {product.category === 'Smartphone' && product.specs && (
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'}`}>
+                  <p className="text-xs text-gray-500 uppercase font-bold">Storage</p>
+                  <p className="font-semibold">{product.specs.storage}</p>
+                </div>
+                <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'}`}>
+                  <p className="text-xs text-gray-500 uppercase font-bold">RAM</p>
+                  <p className="font-semibold">{product.specs.ram}</p>
+                </div>
               </div>
-              <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'}`}>
-                <p className="text-xs text-gray-500 uppercase font-bold">RAM</p>
-                <p className="font-semibold">{product.specs.ram}</p>
-              </div>
-            </div>
+            )}
 
             <div className="flex items-center gap-4 mt-auto">
               <div className={`flex items-center rounded-xl border ${isDarkMode ? 'border-slate-700' : 'border-gray-200'}`}>
@@ -189,12 +191,16 @@ const ProductDetails = () => {
 
             {activeTab === 'specifications' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {Object.entries(product.specs).map(([key, value]) => (
-                  <div key={key} className={`flex justify-between p-4 rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-gray-100'}`}>
-                    <span className="text-gray-500 capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
-                    <span className="font-bold">{value}</span>
-                  </div>
-                ))}
+                {product.specs ? Object.entries(product.specs).map(([key, value]) => (
+                  value && (
+                    <div key={key} className={`flex justify-between p-4 rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-gray-100'}`}>
+                      <span className="text-gray-500 capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+                      <span className="font-bold">{value}</span>
+                    </div>
+                  )
+                )) : (
+                  <p className="text-center text-gray-500 col-span-2">No technical specifications available for this item.</p>
+                )}
               </div>
             )}
 

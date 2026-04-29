@@ -13,14 +13,13 @@ const Products = () => {
   const { isDarkMode } = useSelector((state) => state.theme);
 
   // Safely extract products and pagination info from state
-  const products = (Array.isArray(productState?.products)
-    ? productState.products
-    : (productState?.products?.products || [])).filter(p => p.category === 'Smartphone' || !p.category);
+  const { products: allProducts } = useSelector((state) => state.products);
+  const products = (allProducts || []).filter(p => p.category === 'Smartphone');
 
   const brands = productState?.brands || [];
   const isLoading = productState?.isLoading;
-  const pages = productState?.pages || productState?.products?.pages || 1;
-  const currentPage = productState?.page || productState?.products?.page || 1;
+  const pages = productState?.pages || 1;
+  const currentPage = productState?.page || 1;
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
