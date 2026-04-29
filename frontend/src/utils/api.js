@@ -82,4 +82,11 @@ export const couponAPI = {
   deleteCoupon: (id) => API.delete(`/coupons/${id}`),
 };
 
+// Upload APIs
+export const uploadAPI = {
+  uploadImage: (formData) => API.post('/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+};
+
 export default API;
