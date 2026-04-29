@@ -77,59 +77,48 @@ const Home = () => {
           <h2 className={`text-2xl font-bold text-center mb-12 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Shop by Brand</h2>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
             {brands.map((brand, index) => (
-              <Link key={index} to={`/products?brand=${brand.name}`}>
+              <Link key={index} to={`/products?brand=${brand.name}`} className="relative group">
                 <motion.div
                   initial={{ scale: 0, opacity: 0, y: 50 }}
                   whileInView={{ scale: 1, opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ 
                     type: 'spring', 
-                    stiffness: 300, 
-                    damping: 20, 
+                    stiffness: 400, 
+                    damping: 15, 
                     delay: index * 0.1 
                   }}
                   whileHover={{ 
-                    scale: 1.15, 
-                    y: -10,
+                    y: -15,
+                    transition: { type: 'spring', stiffness: 400, damping: 10 }
                   }}
-                  className={`flex flex-col items-center justify-center p-6 rounded-3xl transition-colors cursor-pointer ${
-                    isDarkMode ? 'text-gray-400 hover:text-white hover:bg-slate-700/50' : 'text-gray-500 hover:text-blue-600 hover:bg-white hover:shadow-xl'
+                  className={`flex flex-col items-center justify-center p-8 rounded-[2rem] transition-all duration-300 cursor-pointer relative ${
+                    isDarkMode 
+                      ? 'text-gray-400 hover:text-white hover:bg-slate-700/50' 
+                      : 'text-gray-500 hover:text-blue-600 hover:bg-white hover:shadow-2xl hover:shadow-blue-500/10'
                   }`}
                 >
-                  <brand.icon size={56} className="mb-4 drop-shadow-md transition-transform" />
-                  <span className="font-bold text-sm tracking-wider uppercase">{brand.name}</span>
+                  {/* Top-up Badge Anime */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.5 }}
+                    whileHover={{ opacity: 1, y: -45, scale: 1 }}
+                    className="absolute top-0 px-3 py-1 bg-blue-600 text-white text-[10px] font-black rounded-full shadow-lg shadow-blue-500/50 pointer-events-none tracking-tighter"
+                  >
+                    TOP BRAND
+                  </motion.div>
+
+                  <brand.icon size={60} className="mb-4 drop-shadow-xl transition-transform duration-300 group-hover:scale-110" />
+                  <span className="font-black text-sm tracking-widest uppercase">{brand.name}</span>
+                  
+                  {/* Decorative Glow */}
+                  <div className={`absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl -z-10 ${isDarkMode ? 'bg-blue-500/10' : 'bg-blue-500/5'}`}></div>
                 </motion.div>
               </Link>
             ))}
           </div>
         </div>
       </section>
-
-      {/* Featured Products */}
-      <section className="py-20 max-w-7xl mx-auto px-4">
-        <div className="flex flex-col items-center mb-16">
-          <div className="flex items-center gap-2 text-blue-600 font-bold tracking-widest uppercase text-sm mb-4">
-            <FiStar /> Our Picks <FiStar />
-          </div>
-          <h2 className={`text-4xl font-extrabold text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-            Featured Smartphones
-          </h2>
-        </div>
-
-        {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className={`h-96 rounded-2xl animate-pulse ${isDarkMode ? 'bg-slate-800' : 'bg-gray-200'}`}></div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredProducts.map(product => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
-        )}
-      </section>
+      
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { FiUpload, FiX, FiPlus, FiSave, FiSmartphone } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const ProductForm = ({ productId, onClose, onSaveSuccess }) => {
+const ProductForm = ({ productId, onClose, onSaveSuccess, defaultCategory }) => {
   const dispatch = useDispatch();
   const { product, isLoading, isError, message } = useSelector((state) => state.products);
   const { isDarkMode } = useSelector((state) => state.theme);
@@ -17,6 +17,7 @@ const ProductForm = ({ productId, onClose, onSaveSuccess }) => {
     description: '',
     price: '',
     discountPercentage: '',
+    category: defaultCategory || 'Smartphone',
     images: [],
     stock: '',
     specs: {
@@ -35,7 +36,8 @@ const ProductForm = ({ productId, onClose, onSaveSuccess }) => {
   const [imageFiles, setImageFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const brands = ['Apple', 'Samsung', 'Xiaomi', 'OnePlus', 'Google Pixel', 'Oppo', 'Vivo', 'Realme'];
+  const categories = ['Smartphone', 'Component'];
+  const brands = ['Apple', 'Samsung', 'Xiaomi', 'OnePlus', 'Google Pixel', 'Oppo', 'Vivo', 'Realme', 'Sony', 'Beats', 'Logitech', 'Generic'];
   const ramOptions = ['4GB', '6GB', '8GB', '12GB', '16GB'];
   const storageOptions = ['64GB', '128GB', '256GB', '512GB', '1TB'];
 
@@ -51,12 +53,13 @@ const ProductForm = ({ productId, onClose, onSaveSuccess }) => {
       setFormData({
         name: product.name,
         brand: product.brand,
+        category: product.category || 'Smartphone',
         description: product.description,
         price: product.price,
         discountPercentage: product.discountPercentage,
         images: product.images,
         stock: product.stock,
-        specs: product.specs,
+        specs: product.specs || {},
         isFeatured: product.isFeatured,
         isFlashSale: product.isFlashSale,
         flashSaleEnd: product.flashSaleEnd ? new Date(product.flashSaleEnd).toISOString().slice(0, 16) : ''
@@ -151,19 +154,25 @@ const ProductForm = ({ productId, onClose, onSaveSuccess }) => {
           <input type="text" name="name" value={formData.name} onChange={onChange} className={inputClass} required />
         </div>
         <div>
+          <label className={labelClass}>Category</label>
+          <select name="category" value={formData.category} onChange={onChange} className={inputClass} required>
+            {categories.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </div>
+        <div>
           <label className={labelClass}>Brand</label>
           <select name="brand" value={formData.brand} onChange={onChange} className={inputClass} required>
             <option value="">Select Brand</option>
             {brands.map(b => <option key={b} value={b}>{b}</option>)}
           </select>
         </div>
+        <div>
+          <label className={labelClass}>Price (RS.)</label>
+          <input type="number" name="price" value={formData.price} onChange={onChange} className={inputClass} required min="0" step="0.01" />
+        </div>
         <div className="md:col-span-2">
           <label className={labelClass}>Description</label>
           <textarea name="description" value={formData.description} onChange={onChange} className={`${inputClass} h-24`} required></textarea>
-        </div>
-        <div>
-          <label className={labelClass}>Price ($)</label>
-          <input type="number" name="price" value={formData.price} onChange={onChange} className={inputClass} required min="0" step="0.01" />
         </div>
         <div>
           <label className={labelClass}>Discount (%)</label>
@@ -174,44 +183,46 @@ const ProductForm = ({ productId, onClose, onSaveSuccess }) => {
           <input type="number" name="stock" value={formData.stock} onChange={onChange} className={inputClass} required min="0" />
         </div>
 
-        {/* Specs */}
-        <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 border-t border-b py-6 my-4 border-gray-200 dark:border-slate-700">
-          <h3 className="col-span-full text-lg font-bold mb-2">Specifications</h3>
-          <div>
-            <label className={labelClass}>Storage</label>
-            <select name="specs.storage" value={formData.specs.storage} onChange={onChange} className={inputClass} required>
-              <option value="">Select Storage</option>
-              {storageOptions.map(s => <option key={s} value={s}>{s}</option>)}
-            </select>
+        {/* Specs - Only for Smartphones */}
+        {formData.category === 'Smartphone' && (
+          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 border-t border-b py-6 my-4 border-gray-200 dark:border-slate-700">
+            <h3 className="col-span-full text-lg font-bold mb-2">Specifications</h3>
+            <div>
+              <label className={labelClass}>Storage</label>
+              <select name="specs.storage" value={formData.specs.storage} onChange={onChange} className={inputClass} required={formData.category === 'Smartphone'}>
+                <option value="">Select Storage</option>
+                {storageOptions.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className={labelClass}>RAM</label>
+              <select name="specs.ram" value={formData.specs.ram} onChange={onChange} className={inputClass} required={formData.category === 'Smartphone'}>
+                <option value="">Select RAM</option>
+                {ramOptions.map(r => <option key={r} value={r}>{r}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className={labelClass}>Processor</label>
+              <input type="text" name="specs.processor" value={formData.specs.processor} onChange={onChange} className={inputClass} required={formData.category === 'Smartphone'} />
+            </div>
+            <div>
+              <label className={labelClass}>Camera</label>
+              <input type="text" name="specs.camera" value={formData.specs.camera} onChange={onChange} className={inputClass} required={formData.category === 'Smartphone'} />
+            </div>
+            <div>
+              <label className={labelClass}>Battery</label>
+              <input type="text" name="specs.battery" value={formData.specs.battery} onChange={onChange} className={inputClass} required={formData.category === 'Smartphone'} />
+            </div>
+            <div>
+              <label className={labelClass}>Display Size</label>
+              <input type="text" name="specs.displaySize" value={formData.specs.displaySize} onChange={onChange} className={inputClass} required={formData.category === 'Smartphone'} />
+            </div>
+            <div>
+              <label className={labelClass}>OS</label>
+              <input type="text" name="specs.os" value={formData.specs.os} onChange={onChange} className={inputClass} required={formData.category === 'Smartphone'} />
+            </div>
           </div>
-          <div>
-            <label className={labelClass}>RAM</label>
-            <select name="specs.ram" value={formData.specs.ram} onChange={onChange} className={inputClass} required>
-              <option value="">Select RAM</option>
-              {ramOptions.map(r => <option key={r} value={r}>{r}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className={labelClass}>Processor</label>
-            <input type="text" name="specs.processor" value={formData.specs.processor} onChange={onChange} className={inputClass} required />
-          </div>
-          <div>
-            <label className={labelClass}>Camera</label>
-            <input type="text" name="specs.camera" value={formData.specs.camera} onChange={onChange} className={inputClass} required />
-          </div>
-          <div>
-            <label className={labelClass}>Battery</label>
-            <input type="text" name="specs.battery" value={formData.specs.battery} onChange={onChange} className={inputClass} required />
-          </div>
-          <div>
-            <label className={labelClass}>Display Size</label>
-            <input type="text" name="specs.displaySize" value={formData.specs.displaySize} onChange={onChange} className={inputClass} required />
-          </div>
-          <div>
-            <label className={labelClass}>OS</label>
-            <input type="text" name="specs.os" value={formData.specs.os} onChange={onChange} className={inputClass} required />
-          </div>
-        </div>
+        )}
 
         {/* Images */}
         <div className="md:col-span-2">

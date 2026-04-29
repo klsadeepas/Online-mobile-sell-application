@@ -15,10 +15,11 @@ const AdminProducts = () => {
   const [editingProductId, setEditingProductId] = useState(null);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [page, setPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState('Smartphone');
 
   useEffect(() => {
-    dispatch(getProducts({ page, keyword: searchKeyword }));
-  }, [dispatch, page, searchKeyword]);
+    dispatch(getProducts({ page, keyword: searchKeyword, category: selectedCategory }));
+  }, [dispatch, page, searchKeyword, selectedCategory]);
 
   const handleAddProduct = () => {
     setEditingProductId(null);
@@ -35,7 +36,7 @@ const AdminProducts = () => {
       try {
         await dispatch(deleteProduct(id)).unwrap();
         toast.success('Product deleted successfully!');
-        dispatch(getProducts({ page, keyword: searchKeyword })); // Refresh list
+        dispatch(getProducts({ page, keyword: searchKeyword, category: selectedCategory })); // Refresh list
       } catch (error) {
         toast.error(error || 'Failed to delete product');
       }
@@ -43,7 +44,7 @@ const AdminProducts = () => {
   };
 
   const handleSaveSuccess = () => {
-    dispatch(getProducts({ page, keyword: searchKeyword })); // Refresh list
+    dispatch(getProducts({ page, keyword: searchKeyword, category: selectedCategory })); // Refresh list
   };
 
   const handlePageChange = (newPage) => {
@@ -55,7 +56,7 @@ const AdminProducts = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-extrabold flex items-center gap-3">
-            <FiSmartphone className="text-blue-500" /> Product Management
+            <FiSmartphone className="text-blue-500" /> {selectedCategory === 'Smartphone' ? 'Products' : 'Components'} Management
           </h1>
           <button
             onClick={handleAddProduct}
@@ -76,6 +77,7 @@ const AdminProducts = () => {
             >
               <ProductForm
                 productId={editingProductId}
+                defaultCategory={selectedCategory}
                 onClose={() => setShowForm(false)}
                 onSaveSuccess={handleSaveSuccess}
               />
@@ -84,12 +86,36 @@ const AdminProducts = () => {
         </AnimatePresence>
 
         <div className={`p-6 rounded-3xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'} shadow-sm`}>
-          <div className="mb-6 flex justify-between items-center">
+          <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            {/* Page Selector Tabs */}
+            <div className={`flex p-1 rounded-2xl ${isDarkMode ? 'bg-slate-700' : 'bg-gray-100'}`}>
+              <button
+                onClick={() => { setSelectedCategory('Smartphone'); setPage(1); }}
+                className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${
+                  selectedCategory === 'Smartphone'
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'text-gray-500 hover:text-blue-500'
+                }`}
+              >
+                Products Page
+              </button>
+              <button
+                onClick={() => { setSelectedCategory('Component'); setPage(1); }}
+                className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${
+                  selectedCategory === 'Component'
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'text-gray-500 hover:text-blue-500'
+                }`}
+              >
+                Components Page
+              </button>
+            </div>
+
             <div className="relative w-full max-w-md">
               <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder={`Search ${selectedCategory.toLowerCase()}s...`}
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
                 className={`w-full pl-10 pr-4 py-2 rounded-xl border focus:ring-2 focus:ring-blue-500 outline-none ${isDarkMode ? 'bg-slate-700 border-slate-600 text-white' : 'bg-gray-50 border-gray-200'}`}
@@ -109,6 +135,7 @@ const AdminProducts = () => {
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
@@ -122,6 +149,7 @@ const AdminProducts = () => {
                           <img src={product.images[0]} alt={product.name} className="h-10 w-10 rounded-md object-cover" />
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{product.name}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">{product.category || 'Smartphone'}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{product.brand}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">Rs. {product.price.toLocaleString()}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{product.stock}</td>
