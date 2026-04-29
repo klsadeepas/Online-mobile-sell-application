@@ -74,6 +74,9 @@ const Header = () => {
                 Orders
               </Link>
             )}
+            <Link to="/about" className={`hover:text-blue-600 transition ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              About
+            </Link>
           </nav>
 
           {/* Search Bar */}
@@ -236,6 +239,13 @@ const Header = () => {
                   Orders
                 </Link>
               )}
+              <Link
+                to="/about"
+                onClick={() => setIsMenuOpen(false)}
+                className={`block py-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+              >
+                About
+              </Link>
             </nav>
           </div>
         )}

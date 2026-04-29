@@ -1,10 +1,28 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FiArrowRight, FiSmartphone } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 
+const heroImages = [
+  'https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=800',
+  'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?q=80&w=800',
+  'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=800',
+  'https://images.unsplash.com/photo-1591337676887-a217a6970a8a?q=80&w=800',
+  'https://images.unsplash.com/photo-1605236453806-6ff36851218e?q=80&w=800',
+  'https://images.unsplash.com/photo-1544228428-c11d2179b362?q=80&w=800'
+];
+
 const Hero = () => {
   const { isDarkMode } = useSelector((state) => state.theme);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section className="relative overflow-hidden pt-16 pb-20 lg:pt-32 lg:pb-40">
@@ -24,7 +42,7 @@ const Hero = () => {
             className="flex-1 text-center lg:text-left"
           >
             <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 mb-6">
-              <FiSmartphone className="mr-2" /> New Arrivals 2024
+              <FiSmartphone className="mr-2" /> New Arrivals 2026
             </span>
             <h1 className={`text-5xl lg:text-7xl font-extrabold mb-6 leading-tight ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
               Experience the <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">Future</span> of Mobile
@@ -58,8 +76,19 @@ const Hero = () => {
             transition={{ duration: 1, ease: "easeOut" }}
             className="flex-1 relative"
           >
-            <div className="relative z-10 w-full max-w-[500px] mx-auto">
-              <img src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=800" alt="Latest Smartphone" className="rounded-[3rem] shadow-2xl" />
+            <div className="relative z-10 w-full max-w-[500px] mx-auto aspect-[3/4] rounded-[3rem] shadow-2xl overflow-hidden bg-gray-100 dark:bg-slate-800">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={currentImageIndex}
+                  src={heroImages[currentImageIndex]}
+                  alt={`Smartphone ${currentImageIndex + 1}`}
+                  initial={{ opacity: 0, scale: 1.1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="w-full h-full object-cover absolute top-0 left-0"
+                />
+              </AnimatePresence>
             </div>
             {/* Floating Spec Tags */}
             <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4 }} className="absolute top-1/4 -left-10 z-20 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700">

@@ -19,6 +19,7 @@ import Orders from './pages/customer/Orders';
 import OrderDetails from './pages/customer/OrderDetails';
 import Wishlist from './pages/customer/Wishlist';
 import Profile from './pages/customer/Profile';
+import About from './pages/About';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard';
@@ -62,6 +63,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/about" element={<About />} />
           <Route path="/checkout" element={
             <ProtectedRoute>
               <Checkout />

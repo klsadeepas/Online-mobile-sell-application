@@ -80,15 +80,15 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center space-x-3 text-gray-400">
                 <FiPhone className="flex-shrink-0" />
-                <span>+1 234 567 890</span>
+                <span>0753519186</span>
               </li>
               <li className="flex items-center space-x-3 text-gray-400">
                 <FiMail className="flex-shrink-0" />
-                <span>support@mobilehub.com</span>
+                <span>klsadeepa@gmail.com</span>
               </li>
               <li className="flex items-center space-x-3 text-gray-400">
                 <FiMapPin className="flex-shrink-0" />
-                <span>123 Tech Street, New York, NY 10001</span>
+                <span>123 Tech Street, colombo 02</span>
               </li>
             </ul>
           </div>
