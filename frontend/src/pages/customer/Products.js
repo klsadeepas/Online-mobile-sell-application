@@ -13,9 +13,9 @@ const Products = () => {
   const { isDarkMode } = useSelector((state) => state.theme);
 
   // Safely extract products and pagination info from state
-  const products = Array.isArray(productState?.products)
+  const products = (Array.isArray(productState?.products)
     ? productState.products
-    : (productState?.products?.products || []);
+    : (productState?.products?.products || [])).filter(p => p.category === 'Smartphone' || !p.category);
 
   const brands = productState?.brands || [];
   const isLoading = productState?.isLoading;

@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const fs = require('fs'); // Standard node module
 
 // @desc    Get all products
 // @route   GET /api/products
@@ -62,17 +63,24 @@ const getProducts = async (req, res) => {
 
     const count = await Product.countDocuments(query);
     const totalPages = Math.ceil(count / pageSize) || 1;
-
     // If requested page is out of bounds (e.g. after filter change), default to page 1
-    const safePage = page > totalPages ? 1 : Math.max(1, page);
+    const safePage = page > 1 ? page : 1;
 
     const products = await Product.find(query)
       .sort(sort)
-      .skip(pageSize * (safePage - 1))
-      .limit(pageSize);
+      .limit(pageSize)
+      .skip(pageSize * (safePage - 1));
+
+    // ABSOLUTE PROTECTION: Force filter the array to double-check Mongoose results
+    let filteredProducts = products;
+    if (query.category === 'Smartphone') {
+      filteredProducts = products.filter(p => p.category === 'Smartphone' || !p.category);
+    } else if (query.category === 'Component') {
+      filteredProducts = products.filter(p => p.category === 'Component');
+    }
 
     res.json({
-      products,
+      products: filteredProducts,
       page: safePage,
       pages: totalPages,
       total: count
