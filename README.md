@@ -1,4 +1,4 @@
-# Online-mobile-devices-selling-application
+# Online Mobile devices selling application
 A full-stack e-commerce web application built using the MERN stack for selling mobile devices, accessories online. 
 The platform allows users to browse products, search and filter items, view detailed specifications, add products 
 to the cart, place secure orders, and manage their accounts. 
