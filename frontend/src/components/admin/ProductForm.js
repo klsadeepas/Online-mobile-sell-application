@@ -119,18 +119,40 @@ const ProductForm = ({ productId, onClose, onSaveSuccess, defaultCategory }) => 
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    // Sanitize data before submission
+    const submissionData = {
+      ...formData,
+      price: Number(formData.price),
+      stock: Number(formData.stock),
+      discountPercentage: Number(formData.discountPercentage || 0)
+    };
+
+    // Clear smartphone-specific specs if the product is a Component
+    if (submissionData.category === 'Component') {
+      submissionData.specs = {
+        storage: '',
+        ram: '',
+        processor: '',
+        camera: '',
+        battery: '',
+        displaySize: '',
+        os: ''
+      };
+    }
+
     try {
       if (productId) {
-        await dispatch(updateProduct({ id: productId, productData: formData })).unwrap();
+        await dispatch(updateProduct({ id: productId, productData: submissionData })).unwrap();
         toast.success('Product updated successfully!');
       } else {
-        await dispatch(createProduct(formData)).unwrap();
+        await dispatch(createProduct(submissionData)).unwrap();
         toast.success('Product created successfully!');
       }
       onSaveSuccess();
       onClose();
     } catch (error) {
-      toast.error(error || 'Failed to save product');
+      toast.error(typeof error === 'string' ? error : (error.message || 'Validation failed. Please check all fields.'));
     }
   };
 
