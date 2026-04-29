@@ -12,13 +12,8 @@ const Components = () => {
   const productState = useSelector((state) => state.products);
   const { isDarkMode } = useSelector((state) => state.theme);
 
-  const products = (Array.isArray(productState?.products)
-    ? productState.products
-    : (productState?.products?.products || [])).filter(p => p.category === 'Component');
-
-  const isLoading = productState?.isLoading;
-  const pages = productState?.pages || productState?.products?.pages || 1;
-  const currentPage = productState?.page || productState?.products?.page || 1;
+  const { products: allProducts, pages, page: currentPage, isLoading } = productState;
+  const products = (allProducts || []).filter(p => p.category === 'Component');
 
   const [filters, setFilters] = useState({
     minPrice: searchParams.get('minPrice') || '',
