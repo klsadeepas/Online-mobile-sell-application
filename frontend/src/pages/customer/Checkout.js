@@ -77,7 +77,7 @@ const Checkout = () => {
     isDarkMode ? 'bg-slate-700 border-slate-600 text-white' : 'bg-gray-50 border-gray-200'
   }`;
 
-  const finalTotal = cart ? (cart.total - discountAmount) : 0;
+  const finalTotal = cart ? Math.max(0, cart.subtotal - discountAmount) : 0;
 
   return (
     <div className={`min-h-screen pt-24 pb-20 ${isDarkMode ? 'bg-slate-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
@@ -195,10 +195,6 @@ const Checkout = () => {
                 <div className="flex justify-between text-gray-500">
                   <span>Subtotal</span>
                   <span>Rs. {cart?.subtotal.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between text-gray-500">
-                  <span>Tax & Shipping</span>
-                  <span>Rs. {(cart?.tax + cart?.shipping).toLocaleString()}</span>
                 </div>
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-green-500 font-bold">

@@ -126,19 +126,9 @@ const Cart = () => {
                   <span>Subtotal</span>
                   <span className={isDarkMode ? 'text-white' : 'text-gray-900'}>Rs. {cart.subtotal.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-gray-500">
-                  <span>Tax (10%)</span>
-                  <span className={isDarkMode ? 'text-white' : 'text-gray-900'}>Rs. {cart.tax.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between text-gray-500 pb-4 border-b border-gray-100 dark:border-slate-700">
-                  <span>Shipping</span>
-                  <span className={cart.shipping === 0 ? 'text-green-500 font-bold' : isDarkMode ? 'text-white' : 'text-gray-900'}>
-                    {cart.shipping === 0 ? 'FREE' : `Rs. ${cart.shipping}`}
-                  </span>
-                </div>
-                <div className="flex justify-between text-xl font-extrabold">
+                <div className="flex justify-between text-xl font-extrabold border-t pt-4 border-gray-100 dark:border-slate-700">
                   <span>Total</span>
-                  <span className="text-blue-600">Rs. {cart.total.toLocaleString()}</span>
+                  <span className="text-blue-600">Rs. {cart.subtotal.toLocaleString()}</span>
                 </div>
               </div>
 
@@ -156,11 +146,6 @@ const Cart = () => {
                   </div>
                   <p>Secure SSL encrypted checkout</p>
                 </div>
-                {cart.subtotal < 500 && (
-                  <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-xs text-blue-600 dark:text-blue-400">
-                    Add <b>Rs. {(500 - cart.subtotal).toLocaleString()}</b> more to your cart for <b>FREE shipping!</b>
-                  </div>
-                )}
               </div>
             </div>
             
