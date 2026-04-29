@@ -60,6 +60,7 @@ const Header = () => {
             </div>
             <span className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>MobileHub</span>
           </Link>
+          <div> &nbsp;&nbsp;&nbsp;&nbsp;</div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
@@ -67,7 +68,7 @@ const Header = () => {
               Home
             </Link>
             <Link to="/products" className={`hover:text-blue-600 transition ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Products
+              Smartphone
             </Link>
             <Link to="/components" className={`hover:text-blue-600 transition ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
               Components
@@ -90,11 +91,10 @@ const Header = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search phones..."
-                className={`w-full px-4 py-2 rounded-full border focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  isDarkMode 
-                    ? 'bg-slate-700 border-slate-600 text-white placeholder-gray-400' 
-                    : 'bg-gray-100 border-gray-200 text-gray-900'
-                }`}
+                className={`w-full px-4 py-2 rounded-full border focus:outline-none focus:ring-2 focus:ring-blue-500 ${isDarkMode
+                  ? 'bg-slate-700 border-slate-600 text-white placeholder-gray-400'
+                  : 'bg-gray-100 border-gray-200 text-gray-900'
+                  }`}
               />
               <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600">
                 <FiSearch />
@@ -182,11 +182,10 @@ const Header = () => {
             ) : (
               <Link
                 to="/login"
-                className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-                  isDarkMode 
-                    ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                    : 'bg-blue-600 hover:bg-blue-700 text-white'
-                }`}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition ${isDarkMode
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                  : 'bg-blue-600 hover:bg-blue-700 text-white'
+                  }`}
               >
                 Login
               </Link>
@@ -211,11 +210,10 @@ const Header = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search phones..."
-                className={`w-full px-4 py-2 rounded-full border focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  isDarkMode 
-                    ? 'bg-slate-700 border-slate-600 text-white placeholder-gray-400' 
-                    : 'bg-gray-100 border-gray-200 text-gray-900'
-                }`}
+                className={`w-full px-4 py-2 rounded-full border focus:outline-none focus:ring-2 focus:ring-blue-500 ${isDarkMode
+                  ? 'bg-slate-700 border-slate-600 text-white placeholder-gray-400'
+                  : 'bg-gray-100 border-gray-200 text-gray-900'
+                  }`}
               />
             </form>
             <nav className="flex flex-col space-y-3">
