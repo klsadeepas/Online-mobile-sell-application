@@ -19,6 +19,7 @@ import Orders from './pages/customer/Orders';
 import OrderDetails from './pages/customer/OrderDetails';
 import Wishlist from './pages/customer/Wishlist';
 import Profile from './pages/customer/Profile';
+import Components from './pages/customer/Components';
 import About from './pages/About';
 
 // Admin Pages
@@ -63,6 +64,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/components" element={<Components />} />
           <Route path="/about" element={<About />} />
           <Route path="/checkout" element={
             <ProtectedRoute>

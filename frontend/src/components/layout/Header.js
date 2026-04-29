@@ -69,6 +69,9 @@ const Header = () => {
             <Link to="/products" className={`hover:text-blue-600 transition ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
               Products
             </Link>
+            <Link to="/components" className={`hover:text-blue-600 transition ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              Components
+            </Link>
             {user && (
               <Link to="/orders" className={`hover:text-blue-600 transition ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                 Orders
@@ -229,6 +232,13 @@ const Header = () => {
                 className={`block py-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
               >
                 Products
+              </Link>
+              <Link
+                to="/components"
+                onClick={() => setIsMenuOpen(false)}
+                className={`block py-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+              >
+                Components
               </Link>
               {user && (
                 <Link

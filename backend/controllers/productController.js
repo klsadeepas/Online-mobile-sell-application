@@ -22,6 +22,13 @@ const getProducts = async (req, res) => {
     // Start with keyword filters
     let query = { ...keyword };
 
+    // Add category filter - DEFAULT to Smartphone if not specified
+    if (req.query.category) {
+      query.category = req.query.category;
+    } else {
+      query.category = 'Smartphone';
+    }
+
     // Add brand filter (case-insensitive for better UX)
     if (req.query.brand && req.query.brand !== 'All') {
       query.brand = { $regex: new RegExp(`^${req.query.brand}$`, 'i') };
@@ -81,7 +88,7 @@ const getProducts = async (req, res) => {
 // @access  Public
 const getFeaturedProducts = async (req, res) => {
   try {
-    const products = await Product.find({ isFeatured: true }).limit(8);
+    const products = await Product.find({ isFeatured: true, category: 'Smartphone' }).limit(8);
     res.json(products);
   } catch (error) {
     console.error(error);
@@ -97,6 +104,7 @@ const getFlashSaleProducts = async (req, res) => {
     const now = new Date();
     const products = await Product.find({
       isFlashSale: true,
+      category: 'Smartphone',
       flashSaleEnd: { $gt: now }
     });
     res.json(products);

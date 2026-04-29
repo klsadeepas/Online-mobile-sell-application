@@ -50,7 +50,7 @@ const Products = () => {
       page: params.page || 1
     }));
 
-    const queryParams = { ...params, page: params.page || 1 };
+    const queryParams = { ...params, category: 'Smartphone', page: params.page || 1 };
     // Only pass keyword if it has a valid value to avoid backend searching for "undefined"
     if (params.search) queryParams.keyword = params.search;
 
@@ -61,7 +61,7 @@ const Products = () => {
     const newFilters = { ...filters, [name]: value };
     setFilters(newFilters);
 
-    const params = {};
+    const params = { category: 'Smartphone' };
     if (newFilters.brand) params.brand = newFilters.brand;
     if (newFilters.minPrice) params.minPrice = newFilters.minPrice;
     if (newFilters.maxPrice) params.maxPrice = newFilters.maxPrice;
@@ -84,7 +84,7 @@ const Products = () => {
     setFilters({
       brand: '', minPrice: '', maxPrice: '', ram: '', storage: '', sort: 'latest', keyword: '', inStock: false
     });
-    setSearchParams({});
+    setSearchParams({ category: 'Smartphone' });
   };
 
   return (

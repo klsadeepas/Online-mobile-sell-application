@@ -10,7 +10,12 @@ const productSchema = new mongoose.Schema({
   brand: {
     type: String,
     required: [true, 'Please provide brand name'],
-    enum: ['Apple', 'Samsung', 'Xiaomi', 'OnePlus', 'Google Pixel', 'Oppo', 'Vivo', 'Realme']
+  },
+  category: {
+    type: String,
+    required: [true, 'Please provide category'],
+    enum: ['Smartphone', 'Component'],
+    default: 'Smartphone'
   },
   description: {
     type: String,
@@ -41,12 +46,12 @@ const productSchema = new mongoose.Schema({
     default: 0
   },
   specs: {
-    storage: { type: String, required: true },
-    ram: { type: String, required: true },
-    processor: { type: String, required: true },
-    camera: { type: String, required: true },
-    battery: { type: String, required: true },
-    displaySize: { type: String, required: true },
+    storage: { type: String },
+    ram: { type: String },
+    processor: { type: String },
+    camera: { type: String },
+    battery: { type: String },
+    displaySize: { type: String },
     os: { type: String }
   },
   rating: {
