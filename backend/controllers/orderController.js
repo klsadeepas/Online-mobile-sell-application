@@ -45,9 +45,9 @@ const createOrder = async (req, res) => {
 
     // Calculate totals
     const subtotal = cart.subtotal;
-    const tax = Math.round(subtotal * 0.1 * 100) / 100;
-    const shipping = subtotal > 500 ? 0 : 50;
-    const total = subtotal + tax + shipping - discount;
+    const tax = 0;
+    const shipping = 0;
+    const total = Math.max(0, subtotal - discount);
 
     // Create order
     const order = new Order({
