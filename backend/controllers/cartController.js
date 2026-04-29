@@ -52,9 +52,9 @@ const addToCart = async (req, res) => {
         product: productId,
         name: product.name,
         image: product.images[0],
-        price: product.price - (product.price * product.discount / 100),
+        price: product.price, // product.price is already the final selling price
         quantity: quantity || 1,
-        totalPrice: (product.price - (product.price * product.discount / 100)) * (quantity || 1)
+        totalPrice: product.price * (quantity || 1)
       });
     }
 
