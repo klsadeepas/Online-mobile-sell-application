@@ -1,5 +1,8 @@
 # Online-mobile-sell-application
+A full-stack e-commerce web application built using the MERN stack for selling mobile devices, accessories online. The platform allows 
+users to browse products, search and filter items, view detailed specifications, add products to the cart, place secure orders, and manage their accounts. 
 
+It also includes an admin dashboard for product management, inventory control, order tracking, and customer management, providing a complete and modern online shopping experience.
 
 # What technologies are used for this project?
 - React.js with Tailwind CSS
