@@ -9,7 +9,8 @@ const productSchema = new mongoose.Schema({
   },
   brand: {
     type: String,
-    required: [true, 'Please provide brand name'],
+    required: [true, 'Please provide brand name']
+    // NO ENUM HERE - ALLOW ALL BRANDS
   },
   category: {
     type: String,
@@ -26,11 +27,11 @@ const productSchema = new mongoose.Schema({
     required: [true, 'Please provide price'],
     min: 0
   },
-  originalPrice: { // Price before discount
+  originalPrice: {
     type: Number,
     min: 0
   },
-  discountPercentage: { // Percentage discount
+  discountPercentage: {
     type: Number,
     default: 0,
     min: 0,
@@ -46,13 +47,13 @@ const productSchema = new mongoose.Schema({
     default: 0
   },
   specs: {
-    storage: { type: String },
-    ram: { type: String },
-    processor: { type: String },
-    camera: { type: String },
-    battery: { type: String },
-    displaySize: { type: String },
-    os: { type: String }
+    storage: { type: String, required: false, default: '' },
+    ram: { type: String, required: false, default: '' },
+    processor: { type: String, required: false, default: '' },
+    camera: { type: String, required: false, default: '' },
+    battery: { type: String, required: false, default: '' },
+    displaySize: { type: String, required: false, default: '' },
+    os: { type: String, required: false, default: '' }
   },
   rating: {
     type: Number,
@@ -81,19 +82,17 @@ const productSchema = new mongoose.Schema({
   }
 });
 
-// Pre-save hook to calculate originalPrice if discountPercentage is provided
 productSchema.pre('save', function(next) {
   if (this.isModified('price') || this.isModified('discountPercentage')) {
     if (this.discountPercentage > 0 && this.price > 0) {
       this.originalPrice = this.price / (1 - this.discountPercentage / 100);
     } else {
-      this.originalPrice = this.price; // If no discount, originalPrice is the same as price
+      this.originalPrice = this.price;
     }
   }
   next();
 });
 
-// Index for search
 productSchema.index({ name: 'text', brand: 'text', description: 'text' });
 
 module.exports = mongoose.model('Product', productSchema);
