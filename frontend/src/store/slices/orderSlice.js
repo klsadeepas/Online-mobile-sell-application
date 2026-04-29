@@ -10,6 +10,9 @@ const initialState = {
   isLoading: false,
   isError: false,
   message: '',
+  pages: 1,
+  page: 1,
+  total: 0,
 };
 
 // Create order
@@ -157,6 +160,9 @@ export const orderSlice = createSlice({
       .addCase(getOrders.fulfilled, (state, action) => {
         state.isLoading = false;
         state.orders = action.payload.orders;
+        state.pages = action.payload.pages;
+        state.page = action.payload.page;
+        state.total = action.payload.total;
       })
       .addCase(getOrders.rejected, (state, action) => {
         state.isLoading = false;
