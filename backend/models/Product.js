@@ -21,7 +21,11 @@ const productSchema = new mongoose.Schema({
     required: [true, 'Please provide price'],
     min: 0
   },
-  discount: {
+  originalPrice: { // Price before discount
+    type: Number,
+    min: 0
+  },
+  discountPercentage: { // Percentage discount
     type: Number,
     default: 0,
     min: 0,
@@ -70,6 +74,18 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+});
+
+// Pre-save hook to calculate originalPrice if discountPercentage is provided
+productSchema.pre('save', function(next) {
+  if (this.isModified('price') || this.isModified('discountPercentage')) {
+    if (this.discountPercentage > 0 && this.price > 0) {
+      this.originalPrice = this.price / (1 - this.discountPercentage / 100);
+    } else {
+      this.originalPrice = this.price; // If no discount, originalPrice is the same as price
+    }
+  }
+  next();
 });
 
 // Index for search

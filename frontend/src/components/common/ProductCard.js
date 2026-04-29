@@ -30,9 +30,8 @@ const ProductCard = ({ product, isAdmin = false }) => {
     toast.success('Added to wishlist!');
   };
 
-  const discount = product.originalPrice 
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-    : 0;
+  // Use discountPercentage directly from the product object
+  const discountPercentage = product.discountPercentage || 0;
 
   return (
     <Link
@@ -47,10 +46,10 @@ const ProductCard = ({ product, isAdmin = false }) => {
           <span className="px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full animate-pulse">
             🔥 Flash Sale
           </span>
-        )}
-        {discount > 0 && (
+        )} 
+        {discountPercentage > 0 && ( // Display discount percentage if greater than 0
           <span className="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full">
-            -{discount}%
+            -{discountPercentage}%
           </span>
         )}
         {product.isFeatured && (
