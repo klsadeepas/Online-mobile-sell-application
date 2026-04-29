@@ -5,69 +5,69 @@ const Product = require('../models/Product');
 // @access  Public
 const getProducts = async (req, res) => {
   try {
-    const pageSize = 12;
+    const pageSize = 30;
     const page = Number(req.query.page) || 1;
 
-    const keyword = req.query.keyword
+    // Defensive check: ensure keyword is present and not the literal string "undefined"
+    const keyword = (req.query.keyword && req.query.keyword !== 'undefined')
       ? {
-          $or: [
-            { name: { $regex: req.query.keyword, $options: 'i' } },
-            { brand: { $regex: req.query.keyword, $options: 'i' } },
-            { description: { $regex: req.query.keyword, $options: 'i' } }
-          ]
-        }
+        $or: [
+          { name: { $regex: req.query.keyword, $options: 'i' } },
+          { brand: { $regex: req.query.keyword, $options: 'i' } },
+          { description: { $regex: req.query.keyword, $options: 'i' } }
+        ]
+      }
       : {};
 
-    const brand = req.query.brand ? { brand: req.query.brand } : {};
-    const minPrice = req.query.minPrice ? { price: { $gte: Number(req.query.minPrice) } } : {};
-    const maxPrice = req.query.maxPrice ? { price: { $lte: Number(req.query.maxPrice) } } : {};
-    const ram = req.query.ram ? { 'specs.ram': req.query.ram } : {};
-    const storage = req.query.storage ? { 'specs.storage': req.query.storage } : {};
-    const rating = req.query.rating ? { rating: { $gte: Number(req.query.rating) } } : {};
-    const inStock = req.query.inStock === 'true' ? { stock: { $gt: 0 } } : {};
+    // Start with keyword filters
+    let query = { ...keyword };
 
-    const sort = {};
-    if (req.query.sort === 'price_low') {
-      sort.price = 1;
-    } else if (req.query.sort === 'price_high') {
-      sort.price = -1;
-    } else if (req.query.sort === 'rating') {
-      sort.rating = -1;
-    } else if (req.query.sort === 'latest') {
-      sort.createdAt = -1;
-    } else {
-      sort.createdAt = -1;
+    // Add brand filter (case-insensitive for better UX)
+    if (req.query.brand && req.query.brand !== 'All') {
+      query.brand = { $regex: new RegExp(`^${req.query.brand}$`, 'i') };
     }
 
-    const count = await Product.countDocuments({
-      ...keyword,
-      ...brand,
-      ...minPrice,
-      ...maxPrice,
-      ...ram,
-      ...storage,
-      ...rating,
-      ...inStock
-    });
+    // Prevent price filters from overwriting each other
+    if (req.query.minPrice || req.query.maxPrice) {
+      query.price = {};
+      if (req.query.minPrice) query.price.$gte = Number(req.query.minPrice) || 0;
+      if (req.query.maxPrice) query.price.$lte = Number(req.query.maxPrice) || 999999;
+    }
 
-    const products = await Product.find({
-      ...keyword,
-      ...brand,
-      ...minPrice,
-      ...maxPrice,
-      ...ram,
-      ...storage,
-      ...rating,
-      ...inStock
-    })
+    if (req.query.ram) query['specs.ram'] = { $regex: new RegExp(`^${req.query.ram}$`, 'i') };
+    if (req.query.storage) query['specs.storage'] = { $regex: new RegExp(`^${req.query.storage}$`, 'i') };
+    if (req.query.rating) query.rating = { $gte: Number(req.query.rating) };
+    if (req.query.inStock === 'true') query.stock = { $gt: 0 };
+
+    // Support flash sale filtering used in frontend links
+    if (req.query.isFlashSale === 'true') {
+      query.isFlashSale = true;
+      query.flashSaleEnd = { $gt: new Date() };
+    }
+
+    const sort = {};
+    switch (req.query.sort) {
+      case 'price_low': sort.price = 1; break;
+      case 'price_high': sort.price = -1; break;
+      case 'rating': sort.rating = -1; break;
+      default: sort.createdAt = -1;
+    }
+
+    const count = await Product.countDocuments(query);
+    const totalPages = Math.ceil(count / pageSize) || 1;
+
+    // If requested page is out of bounds (e.g. after filter change), default to page 1
+    const safePage = page > totalPages ? 1 : Math.max(1, page);
+
+    const products = await Product.find(query)
       .sort(sort)
-      .skip(pageSize * (page - 1))
+      .skip(pageSize * (safePage - 1))
       .limit(pageSize);
 
     res.json({
       products,
-      page,
-      pages: Math.ceil(count / pageSize),
+      page: safePage,
+      pages: totalPages,
       total: count
     });
   } catch (error) {
