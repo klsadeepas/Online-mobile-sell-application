@@ -108,8 +108,6 @@ const OrderDetails = () => {
               <h3 className="font-bold mb-6">Summary</h3>
               <div className="space-y-4 text-sm">
                 <div className="flex justify-between text-gray-500"><span>Subtotal</span><span>Rs. {order.subtotal.toLocaleString()}</span></div>
-                <div className="flex justify-between text-gray-500"><span>Tax</span><span>Rs. {order.tax.toLocaleString()}</span></div>
-                <div className="flex justify-between text-gray-500"><span>Shipping</span><span>Rs. {order.shipping.toLocaleString()}</span></div>
                 {order.discount > 0 && <div className="flex justify-between text-green-500 font-bold"><span>Discount</span><span>-${order.discount.toLocaleString()}</span></div>}
                 <div className="flex justify-between text-xl font-extrabold border-t pt-4"><span>Total</span><span className="text-blue-600">Rs. {order.total.toLocaleString()}</span></div>
               </div>
