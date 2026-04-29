@@ -95,7 +95,7 @@ const OrderDetails = () => {
                       <p className="font-bold text-sm">{item.name}</p>
                       <p className="text-xs text-gray-500">{item.quantity} x ${item.price.toLocaleString()}</p>
                     </div>
-                    <p className="font-bold">${item.totalPrice.toLocaleString()}</p>
+                    <p className="font-bold">Rs. {item.totalPrice.toLocaleString()}</p>
                   </div>
                 ))}
               </div>
@@ -107,11 +107,11 @@ const OrderDetails = () => {
             <div className={`p-8 rounded-3xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'} shadow-sm`}>
               <h3 className="font-bold mb-6">Summary</h3>
               <div className="space-y-4 text-sm">
-                <div className="flex justify-between text-gray-500"><span>Subtotal</span><span>${order.subtotal.toLocaleString()}</span></div>
-                <div className="flex justify-between text-gray-500"><span>Tax</span><span>${order.tax.toLocaleString()}</span></div>
-                <div className="flex justify-between text-gray-500"><span>Shipping</span><span>${order.shipping.toLocaleString()}</span></div>
+                <div className="flex justify-between text-gray-500"><span>Subtotal</span><span>Rs. {order.subtotal.toLocaleString()}</span></div>
+                <div className="flex justify-between text-gray-500"><span>Tax</span><span>Rs. {order.tax.toLocaleString()}</span></div>
+                <div className="flex justify-between text-gray-500"><span>Shipping</span><span>Rs. {order.shipping.toLocaleString()}</span></div>
                 {order.discount > 0 && <div className="flex justify-between text-green-500 font-bold"><span>Discount</span><span>-${order.discount.toLocaleString()}</span></div>}
-                <div className="flex justify-between text-xl font-extrabold border-t pt-4"><span>Total</span><span className="text-blue-600">${order.total.toLocaleString()}</span></div>
+                <div className="flex justify-between text-xl font-extrabold border-t pt-4"><span>Total</span><span className="text-blue-600">Rs. {order.total.toLocaleString()}</span></div>
               </div>
 
               {['pending', 'confirmed'].includes(order.orderStatus) && (

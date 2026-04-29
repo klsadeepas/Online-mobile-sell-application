@@ -88,7 +88,7 @@ const Orders = () => {
                     </div>
                     <div>
                       <p className="text-xs font-bold text-gray-500 uppercase">Total</p>
-                      <p className="font-bold text-sm text-blue-600">${order.total.toLocaleString()}</p>
+                      <p className="font-bold text-sm text-blue-600">Rs. {order.total.toLocaleString()}</p>
                     </div>
                     <div className="col-span-2 md:col-span-1">
                       <p className="text-xs font-bold text-gray-500 uppercase mb-1">Status</p>
