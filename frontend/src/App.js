@@ -99,6 +99,11 @@ function App() {
               <AdminProducts />
             </ProtectedRoute>
           } />
+          <Route path="/admin/products/edit/:id" element={
+            <ProtectedRoute adminOnly>
+              <AdminProducts /> {/* Re-use AdminProducts page, ProductForm handles edit */}
+            </ProtectedRoute>
+          } />
           <Route path="/admin/orders" element={
             <ProtectedRoute adminOnly>
               <AdminOrders />

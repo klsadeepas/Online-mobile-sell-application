@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path'); // Import path module
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const User = require('./models/User');
@@ -14,6 +15,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const couponRoutes = require('./routes/couponRoutes');
+const uploadRoutes = require('./routes/uploadRoutes'); // Import upload routes
 
 dotenv.config();
 
@@ -26,6 +28,9 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+// Serve static files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
@@ -33,6 +38,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/upload', uploadRoutes); // Add upload route
 app.use('/api/coupons', couponRoutes);
 
 // Health check
