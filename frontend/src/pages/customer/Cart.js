@@ -90,7 +90,7 @@ const Cart = () => {
                   
                   <div className="flex-1 text-center sm:text-left">
                     <Link to={`/products/${item.product._id}`} className="font-bold text-lg hover:text-blue-500 transition-colors line-clamp-1">{item.name}</Link>
-                    <p className="text-blue-600 font-bold mt-1">${item.price.toLocaleString()}</p>
+                    <p className="text-blue-600 font-bold mt-1">Rs. {item.price.toLocaleString()}</p>
                   </div>
 
                   <div className="flex items-center gap-4">
@@ -109,7 +109,7 @@ const Cart = () => {
 
                   <div className="text-right min-w-[100px] hidden sm:block">
                     <p className="text-xs text-gray-500 uppercase font-bold">Total</p>
-                    <p className="font-extrabold text-lg">${item.totalPrice.toLocaleString()}</p>
+                    <p className="font-extrabold text-lg">Rs. {item.totalPrice.toLocaleString()}</p>
                   </div>
                 </motion.div>
               ))}
@@ -124,21 +124,21 @@ const Cart = () => {
               <div className="space-y-4 mb-8">
                 <div className="flex justify-between text-gray-500">
                   <span>Subtotal</span>
-                  <span className={isDarkMode ? 'text-white' : 'text-gray-900'}>${cart.subtotal.toLocaleString()}</span>
+                  <span className={isDarkMode ? 'text-white' : 'text-gray-900'}>Rs. {cart.subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-gray-500">
                   <span>Tax (10%)</span>
-                  <span className={isDarkMode ? 'text-white' : 'text-gray-900'}>${cart.tax.toLocaleString()}</span>
+                  <span className={isDarkMode ? 'text-white' : 'text-gray-900'}>Rs. {cart.tax.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-gray-500 pb-4 border-b border-gray-100 dark:border-slate-700">
                   <span>Shipping</span>
                   <span className={cart.shipping === 0 ? 'text-green-500 font-bold' : isDarkMode ? 'text-white' : 'text-gray-900'}>
-                    {cart.shipping === 0 ? 'FREE' : `$${cart.shipping}`}
+                    {cart.shipping === 0 ? 'FREE' : `Rs. ${cart.shipping}`}
                   </span>
                 </div>
                 <div className="flex justify-between text-xl font-extrabold">
                   <span>Total</span>
-                  <span className="text-blue-600">${cart.total.toLocaleString()}</span>
+                  <span className="text-blue-600">Rs. {cart.total.toLocaleString()}</span>
                 </div>
               </div>
 
@@ -158,7 +158,7 @@ const Cart = () => {
                 </div>
                 {cart.subtotal < 500 && (
                   <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-xs text-blue-600 dark:text-blue-400">
-                    Add <b>${(500 - cart.subtotal).toLocaleString()}</b> more to your cart for <b>FREE shipping!</b>
+                    Add <b>Rs. {(500 - cart.subtotal).toLocaleString()}</b> more to your cart for <b>FREE shipping!</b>
                   </div>
                 )}
               </div>

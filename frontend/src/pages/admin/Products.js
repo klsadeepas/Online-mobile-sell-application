@@ -123,7 +123,7 @@ const AdminProducts = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{product.name}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{product.brand}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">${product.price.toLocaleString()}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">Rs. {product.price.toLocaleString()}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{product.stock}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex items-center gap-2">

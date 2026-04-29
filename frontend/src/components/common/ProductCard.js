@@ -129,11 +129,11 @@ const ProductCard = ({ product, isAdmin = false }) => {
         {/* Price */}
         <div className="flex items-center gap-2">
           <span className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-            ${product.price?.toLocaleString()}
+            Rs. {product.price?.toLocaleString()}
           </span>
           {product.originalPrice && product.originalPrice > product.price && (
             <span className={`text-sm line-through ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-              ${product.originalPrice?.toLocaleString()}
+              Rs. {product.originalPrice?.toLocaleString()}
             </span>
           )}
         </div>

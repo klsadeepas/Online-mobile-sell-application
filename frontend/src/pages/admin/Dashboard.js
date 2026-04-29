@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { orderAPI, productAPI, userAPI } from '../../utils/api';
-import { FiUsers, FiShoppingBag, FiPackage, FiDollarSign, FiBarChart2, FiSmartphone } from 'react-icons/fi';
+import { FiUsers, FiShoppingBag, FiPackage, FiDollarSign, FiBarChart2, FiSmartphone, FiArrowRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -105,7 +106,7 @@ const AdminDashboard = () => {
         ticks: {
           color: isDarkMode ? '#9CA3AF' : '#6B7280',
           callback: function(value) {
-            return '$' + value.toLocaleString();
+            return 'Rs. ' + value.toLocaleString();
           }
         },
         grid: {
@@ -127,7 +128,7 @@ const AdminDashboard = () => {
     { title: 'Total Users', value: stats.totalUsers, icon: FiUsers, color: 'text-blue-500', bg: 'bg-blue-100 dark:bg-blue-900/20' },
     { title: 'Total Products', value: stats.totalProducts, icon: FiSmartphone, color: 'text-purple-500', bg: 'bg-purple-100 dark:bg-purple-900/20' },
     { title: 'Total Orders', value: stats.totalOrders, icon: FiPackage, color: 'text-green-500', bg: 'bg-green-100 dark:bg-green-900/20' },
-    { title: 'Total Revenue', value: `$${stats.totalRevenue.toLocaleString()}`, icon: FiDollarSign, color: 'text-yellow-500', bg: 'bg-yellow-100 dark:bg-yellow-900/20' },
+    { title: 'Total Revenue', value: `Rs. ${stats.totalRevenue.toLocaleString()}`, icon: FiDollarSign, color: 'text-yellow-500', bg: 'bg-yellow-100 dark:bg-yellow-900/20' },
   ];
 
   return (
@@ -161,13 +162,52 @@ const AdminDashboard = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className={`p-8 rounded-3xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'} shadow-sm`}
+          className={`p-8 rounded-3xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'} shadow-sm mb-12`}
         >
           <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
             <FiBarChart2 className="text-blue-500" /> Sales Overview
           </h2>
           <div className="h-80">
             <Line data={chartData} options={chartOptions} />
+          </div>
+        </motion.div>
+
+        {/* Quick Management Links */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            Quick Management
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Link to="/admin/products" className={`p-6 rounded-3xl border flex flex-col items-center text-center transition-all hover:-translate-y-2 ${isDarkMode ? 'bg-slate-800 border-slate-700 hover:bg-slate-700' : 'bg-white border-gray-100 hover:shadow-xl'}`}>
+              <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded-full flex items-center justify-center mb-4">
+                <FiSmartphone size={28} />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Manage Products</h3>
+              <p className={`text-sm mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Create new products, edit details, update stock and prices.</p>
+              <span className="text-purple-600 font-semibold flex items-center gap-2 mt-auto">Go to Products <FiArrowRight /></span>
+            </Link>
+
+            <Link to="/admin/orders" className={`p-6 rounded-3xl border flex flex-col items-center text-center transition-all hover:-translate-y-2 ${isDarkMode ? 'bg-slate-800 border-slate-700 hover:bg-slate-700' : 'bg-white border-gray-100 hover:shadow-xl'}`}>
+              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 text-green-600 rounded-full flex items-center justify-center mb-4">
+                <FiPackage size={28} />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Manage Orders</h3>
+              <p className={`text-sm mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>View all customer orders, update statuses, and track shipments.</p>
+              <span className="text-green-600 font-semibold flex items-center gap-2 mt-auto">Go to Orders <FiArrowRight /></span>
+            </Link>
+
+            <Link to="/admin/users" className={`p-6 rounded-3xl border flex flex-col items-center text-center transition-all hover:-translate-y-2 ${isDarkMode ? 'bg-slate-800 border-slate-700 hover:bg-slate-700' : 'bg-white border-gray-100 hover:shadow-xl'}`}>
+              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                <FiUsers size={28} />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Manage Users</h3>
+              <p className={`text-sm mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>View registered users, change roles, and manage accounts.</p>
+              <span className="text-blue-600 font-semibold flex items-center gap-2 mt-auto">Go to Users <FiArrowRight /></span>
+            </Link>
           </div>
         </motion.div>
       </div>
