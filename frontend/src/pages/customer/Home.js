@@ -6,6 +6,7 @@ import Hero from '../../components/home/Hero';
 import ProductCard from '../../components/common/ProductCard';
 import { FiZap, FiStar, FiAward, FiTruck, FiShield, FiRefreshCw } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { SiApple, SiSamsung, SiXiaomi, SiOneplus, SiGoogle } from 'react-icons/si';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -18,11 +19,11 @@ const Home = () => {
   }, [dispatch]);
 
   const brands = [
-    { name: 'Apple', logo: 'https://cdn.simpleicons.org/apple/000000' },
-    { name: 'Samsung', logo: 'https://cdn.simpleicons.org/samsung/000000' },
-    { name: 'Xiaomi', logo: 'https://cdn.simpleicons.org/xiaomi/000000' },
-    { name: 'OnePlus', logo: 'https://cdn.simpleicons.org/oneplus/000000' },
-    { name: 'Google Pixel', logo: 'https://cdn.simpleicons.org/google/000000' }
+    { name: 'Apple', icon: SiApple },
+    { name: 'Samsung', icon: SiSamsung },
+    { name: 'Xiaomi', icon: SiXiaomi },
+    { name: 'OnePlus', icon: SiOneplus },
+    { name: 'Google Pixel', icon: SiGoogle }
   ];
 
   return (
@@ -74,10 +75,30 @@ const Home = () => {
       <section className={`py-16 ${isDarkMode ? 'bg-slate-800/50' : 'bg-gray-100'}`}>
         <div className="max-w-7xl mx-auto px-4">
           <h2 className={`text-2xl font-bold text-center mb-12 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Shop by Brand</h2>
-          <div className="flex flex-wrap justify-center items-center gap-12 opacity-60 hover:opacity-100 transition-opacity">
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
             {brands.map((brand, index) => (
-              <Link key={index} to={`/products?brand=${brand.name}`} className="h-12 w-32 flex items-center justify-center grayscale hover:grayscale-0 transition-all">
-                <img src={brand.logo} alt={brand.name} className={`max-h-full ${isDarkMode ? 'invert' : ''}`} />
+              <Link key={index} to={`/products?brand=${brand.name}`}>
+                <motion.div
+                  initial={{ scale: 0, opacity: 0, y: 50 }}
+                  whileInView={{ scale: 1, opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ 
+                    type: 'spring', 
+                    stiffness: 300, 
+                    damping: 20, 
+                    delay: index * 0.1 
+                  }}
+                  whileHover={{ 
+                    scale: 1.15, 
+                    y: -10,
+                  }}
+                  className={`flex flex-col items-center justify-center p-6 rounded-3xl transition-colors cursor-pointer ${
+                    isDarkMode ? 'text-gray-400 hover:text-white hover:bg-slate-700/50' : 'text-gray-500 hover:text-blue-600 hover:bg-white hover:shadow-xl'
+                  }`}
+                >
+                  <brand.icon size={56} className="mb-4 drop-shadow-md transition-transform" />
+                  <span className="font-bold text-sm tracking-wider uppercase">{brand.name}</span>
+                </motion.div>
               </Link>
             ))}
           </div>

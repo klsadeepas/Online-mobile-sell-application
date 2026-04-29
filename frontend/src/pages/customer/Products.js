@@ -12,9 +12,15 @@ const Products = () => {
   const productState = useSelector((state) => state.products);
   const { isDarkMode } = useSelector((state) => state.theme);
 
-  // Handle both array and object structures safely
-  const products = Array.isArray(productState?.products) ? productState.products : (productState?.products?.products || []);
-  const { brands, isLoading, pages, page: currentPage } = productState;
+  // Safely extract products and pagination info from state
+  const products = Array.isArray(productState?.products)
+    ? productState.products
+    : (productState?.products?.products || []);
+
+  const brands = productState?.brands || [];
+  const isLoading = productState?.isLoading;
+  const pages = productState?.pages || productState?.products?.pages || 1;
+  const currentPage = productState?.page || productState?.products?.page || 1;
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 

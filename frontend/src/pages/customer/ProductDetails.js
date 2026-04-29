@@ -122,9 +122,9 @@ const ProductDetails = () => {
 
             <div className="mb-8">
               <div className="flex items-end gap-3">
-                <span className="text-3xl font-bold">${product.price.toLocaleString()}</span>
+                <span className="text-3xl font-bold">Rs. {product.price.toLocaleString()}</span>
                 {product.originalPrice > product.price && (
-                  <span className="text-xl text-gray-500 line-through mb-1">${product.originalPrice.toLocaleString()}</span>
+                  <span className="text-xl text-gray-500 line-through mb-1">Rs. {product.originalPrice.toLocaleString()}</span>
                 )}
               </div>
               <p className={`mt-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{product.description}</p>
